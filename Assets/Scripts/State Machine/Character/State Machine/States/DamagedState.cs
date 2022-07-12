@@ -13,7 +13,10 @@ public class DamagedState : State
 		Debug.Log("Entered " + stateName);
 		_context.AllowWalk(false);
 		_animator.CrossFade("BasicDamaged", 0.3f, 0);
-        
+
+		//Damage 5 for now
+		_context.CharacterGetter.HealthGetter.TakeDamage(5);
+		Debug.Log("DEBUG");
 		//play hit particle effect
 		_context.Hit.Play(true);
     }

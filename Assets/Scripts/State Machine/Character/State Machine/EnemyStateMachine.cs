@@ -18,6 +18,7 @@ public class EnemyStateMachine : BaseStateMachine
 	{
 		_rb2d = GetComponent<Rigidbody2D>();
 		_comboSystem = new ComboSystem(transform.gameObject.GetComponentInChildren<AnimationEvents>(), this);
+		_character = GetComponent<Character>();
 	}
 
 	public override void AllowWalk(bool allow)

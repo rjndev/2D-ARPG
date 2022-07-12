@@ -10,6 +10,7 @@ public class AttackCollisionsHandler : MonoBehaviour
 
 	private Vector2 _attackDir;
 	private BoxCollider2D _attackCollider;
+	private BaseStateMachine _stateMachine;
 
 	void Awake()
 	{
@@ -19,6 +20,7 @@ public class AttackCollisionsHandler : MonoBehaviour
 	{
 		_attackDir = new Vector2(1, 0);
 		_attackCollider = GetComponent<BoxCollider2D>();
+		_stateMachine = transform.parent.GetComponent<BaseStateMachine>();
 	}
 
 	// Update is called once per frame
@@ -40,7 +42,7 @@ public class AttackCollisionsHandler : MonoBehaviour
 
 	void OnTriggerExit2D(Collider2D collider)
 	{
-		if ((collider.tag == "Enemy" && transform.parent.tag == "Character") || (collider.tag == "Character" && transform.parent.tag == "Enemy"))
+		if ((collider.tag == "Enemy" && transform.parent.tag == "Character") || (collider.tag == "Character" && transform.parent.tag == "Enemy") && _stateMachine.ComboSys.AttackEnd == true)
 		{
 			_collidedChars.Remove(collider.gameObject);
 			Debug.Log("Removed! " + collider.gameObject.name);

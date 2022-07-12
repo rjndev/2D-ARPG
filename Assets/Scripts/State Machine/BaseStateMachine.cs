@@ -13,6 +13,9 @@ public class BaseStateMachine : MonoBehaviour
 	protected Animator _animator;
 	public Animator Animator { get { return _animator; } }
 
+	protected Character _character;
+	public Character CharacterGetter { get { return _character; } }
+
 	protected PlayerController _playerController;
 	public PlayerController PlayerController { get { return _playerController; } }
 
@@ -33,12 +36,19 @@ public class BaseStateMachine : MonoBehaviour
 	public ParticleSystem Hit { get { return _hit; } }
 
 
+
+
 	//DEBUG PURPOSES 
 	[SerializeField]
 	protected Text _debugText;
 	public Text DebugText { get { return _debugText; } }
 
-	public virtual void SwitchState(State newState)
+    void Start()
+    {
+        
+    }
+
+    public virtual void SwitchState(State newState)
 	{
 		_currentState.ExitState();
 		_currentState = newState;

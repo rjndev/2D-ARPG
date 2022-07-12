@@ -25,12 +25,15 @@ public class ComboSystem
 	private const int MAX_COMBOS = 3;
 	private bool _canCombo;
 	private bool _firstAttack;
+	private bool _attackEnd;
+	public bool AttackEnd { get { return _attackEnd; } }
 
 
 	public ComboSystem(AnimationEvents e, BaseStateMachine s)
 	{
 		_combos = new string[MAX_COMBOS];
 		_canCombo = false;
+		_attackEnd = true;
 		_firstAttack = true;
 		_currentComboIndex = 0;
 		_animationEvents = e;
@@ -63,42 +66,42 @@ public class ComboSystem
 
 		if (_firstAttack)
 		{
-
-			Debug.Log("FATTACK");
+			
+			TriggerAttack();
 			_firstAttack = false;
 			_canCombo = false;
-			TriggerAttack();
 		}
 		else
 		{
 			if (_canCombo)
-			{
-				Debug.Log("CANCOMBO ATTACK");
-				_canCombo = false;
+			{				
 				TriggerAttack();
+				_canCombo = false;
 			}
 			else
 			{
-				Debug.Log("CANT COMBO");
 			}
 		}
-
 	}
 
 
 	private void TriggerAttack()
 	{
+		//AttackEnd is used for AttackCollisionsHandler to check if current 
+		//targets are damaged for the attack and can be removed from the Target List
+		//through OnTriggerExit2D
+		_attackEnd = false;
 
 		_currentComboIndex += 1;
 
-
+		if (_currentComboIndex > MAX_COMBOS)
+		{
+			_currentComboIndex = 1;
+		}
+		
 		//_animator.SetTrigger("Attack" + (_currentComboIndex));
 		_animator.CrossFade("BasicAttack" + _currentComboIndex, 0, 0 );
 
-		if (_currentComboIndex >= MAX_COMBOS)
-		{
-			_currentComboIndex = 0;
-		}
 
 		// if (_currentComboIndex >= MAX_COMBOS)
 		// 	_currentComboIndex = 0;
@@ -155,6 +158,9 @@ public class ComboSystem
 		//if it reached end of an attack animation reset back to Idle
 		//and reset counter to 0
 		_currentComboIndex = 0;
+		_firstAttack = true;
+		_canCombo = false;
+		_attackEnd = true;
 		_stateMachine.SwitchState(_stateMachine.Factory.Idle());
 	}
 
@@ -173,10 +179,9 @@ public class ComboSystem
 
 	public void HandleAttackEnd()
 	{
-		//Deactivate Attack colliders
-		//_attackTrigger.enabled = false;
+		_currentComboIndex = 0;
 		_firstAttack = true;
+		_canCombo = false;
 		_stateMachine.AllowAttack(true);
-
 	}
 }

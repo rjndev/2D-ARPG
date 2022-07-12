@@ -13,7 +13,6 @@ public class AttackState : State
 	{
 		Debug.Log("Entering " + stateName);
 		//Disable Movement controls while attacking for now
-		//_context.InputWalk.Disable();
 		_context.AllowWalk(false);
 		_context.AllowAttack(false);
 		_comboSystem = _context.ComboSys;
@@ -23,8 +22,9 @@ public class AttackState : State
 	public override void ExitState()
 	{
 		//Enable back on when finished combo
-		//_context.InputWalk.Enable();
+		Debug.Log("EXITING ATTACK STATE");
 		_context.AllowWalk(true);
+		_context.AllowAttack(true);
 
 	}
 

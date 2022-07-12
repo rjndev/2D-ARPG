@@ -44,6 +44,9 @@ public class PlayerStateMachine : BaseStateMachine
 
 
 		_comboSystem = new ComboSystem(transform.gameObject.GetComponentInChildren<AnimationEvents>(), this);
+
+		_character = GetComponent<Character>();
+		
 	}
 
     // Update is called once per frame
